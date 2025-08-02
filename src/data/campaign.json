@@ -1,0 +1,20 @@
+[
+  { "id": 1, "categories": "coupon", "name": "fixed_amount", "amount": 100 },
+  { "id": 2, "categories": "coupon", "name": "fixed_amount", "amount": 30 },
+  { "id": 3, "categories": "coupon", "name": "percentage", "amount": 0.1 },
+  {
+    "id": 4,
+    "categories": "on_top",
+    "name": "by_category",
+    "amount": 0.1,
+    "item_category": "clothing"
+  },
+  { "id": 5, "categories": "on_top", "name": "point", "amount": null },
+  {
+    "id": 6,
+    "categories": "seasonal",
+    "name": "seasonal",
+    "stepAmount": 400,
+    "stepToDiscountAmount": 80
+  }
+]

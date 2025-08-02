@@ -1,0 +1,52 @@
+[
+  {
+    "categories": "clothing",
+    "items": [
+      {
+        "id": 1,
+        "name": "T-Shirt",
+        "price": 350
+      },
+      {
+        "id": 2,
+        "name": "Jeans",
+        "price": 950
+      },
+      {
+        "id": 3,
+        "name": "Jacket",
+        "price": 100
+      }
+    ]
+  },
+  {
+    "categories": "electronics",
+    "items": [
+      {
+        "id": 1,
+        "name": "Smartphone",
+        "price": 2000
+      },
+      {
+        "id": 2,
+        "name": "Laptop",
+        "price": 5000
+      }
+    ]
+  },
+  {
+    "categories": "accessories",
+    "items": [
+      {
+        "id": 1,
+        "name": "Hat",
+        "price": 150
+      },
+      {
+        "id": 2,
+        "name": "Socks",
+        "price": 100
+      }
+    ]
+  }
+]
