@@ -2,22 +2,22 @@ import { CampaignCategoryEnum, CampaignEnum } from "../enum/campaign.enum";
 import { ShoppingItemCategoryEnum } from "../enum/shopping-item.enum";
 import {
   couponHandler,
-  finalPriceCaculate,
+  finalPriceCalculate,
   onTopHandler,
   seasonalHandler,
 } from "./calculateDiscount";
 
-describe("finalPriceCaculate", () => {
+describe("finalPriceCalculate", () => {
   const baseCart = [
     { name: "Shirt", price: 500, category: ShoppingItemCategoryEnum.CLOTHING },
     { name: "Hat", price: 200, category: ShoppingItemCategoryEnum.ACCESSORIES },
   ];
 
   it("calculates coupon discount only", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 700,
       cart: baseCart,
-      point: 0,
+      points: 0,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: {
           name: CampaignEnum.FIXED_AMOUNT,
@@ -32,10 +32,10 @@ describe("finalPriceCaculate", () => {
   });
 
   it("calculates point discount only", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 700,
       cart: baseCart,
-      point: 10,
+      points: 10,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: undefined,
         [CampaignCategoryEnum.ON_TOP]: {
@@ -49,10 +49,10 @@ describe("finalPriceCaculate", () => {
   });
 
   it("calculates seasonal discount only", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 700,
       cart: baseCart,
-      point: 0,
+      points: 0,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: undefined,
         [CampaignCategoryEnum.ON_TOP]: undefined,
@@ -68,10 +68,10 @@ describe("finalPriceCaculate", () => {
   });
 
   it("calculates all discount types", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 1000,
       cart: baseCart,
-      point: 10,
+      points: 10,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: {
           name: CampaignEnum.PERCENTAGE,
@@ -92,10 +92,10 @@ describe("finalPriceCaculate", () => {
   });
 
   it("applied 2 campaign: coupon and on-top discount", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 1000,
       cart: baseCart,
-      point: 0,
+      points: 0,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: {
           name: CampaignEnum.FIXED_AMOUNT,
@@ -103,6 +103,7 @@ describe("finalPriceCaculate", () => {
         },
         [CampaignCategoryEnum.ON_TOP]: {
           name: CampaignEnum.BY_CATEGORY,
+          item_category: ShoppingItemCategoryEnum.CLOTHING,
           amount: 0.5,
         },
         [CampaignCategoryEnum.SEASONAL]: undefined,
@@ -113,10 +114,10 @@ describe("finalPriceCaculate", () => {
   });
 
   it("applied 2 campaign: coupon and seasonal discount", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 1000,
       cart: baseCart,
-      point: 0,
+      points: 0,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: {
           name: CampaignEnum.FIXED_AMOUNT,
@@ -135,14 +136,15 @@ describe("finalPriceCaculate", () => {
   });
 
   it("applied 2 campaign: on-top and seasonal discount", () => {
-    const result = finalPriceCaculate({
+    const result = finalPriceCalculate({
       basePrice: 1000,
       cart: baseCart,
-      point: 0,
+      points: 0,
       selectedCampaign: {
         [CampaignCategoryEnum.COUPON]: undefined,
         [CampaignCategoryEnum.ON_TOP]: {
           name: CampaignEnum.BY_CATEGORY,
+          item_category: ShoppingItemCategoryEnum.CLOTHING,
           amount: 0.5,
         },
         [CampaignCategoryEnum.SEASONAL]: {

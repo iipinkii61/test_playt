@@ -1,13 +1,12 @@
 import { CampaignCategoryEnum, CampaignEnum } from "../enum/campaign.enum";
-import { ShoppingItemCategoryEnum } from "../enum/shopping-item.enum";
 
-export const finalPriceCaculate = (props) => {
-  const { basePrice, selectedCampaign, cart, point } = props;
+export const finalPriceCalculate = (props) => {
+  const { basePrice, selectedCampaign, cart, points } = props;
   const couponDiscount = couponHandler(selectedCampaign, basePrice) || 0;
   const afterCoupon = basePrice - couponDiscount;
 
   const onTopDiscount =
-    onTopHandler(afterCoupon, selectedCampaign, cart, point) || 0;
+    onTopHandler(afterCoupon, selectedCampaign, cart, points) || 0;
   const afterOnTop = afterCoupon - onTopDiscount;
 
   const seasonalDiscount = seasonalHandler(afterOnTop, selectedCampaign) || 0;
@@ -25,6 +24,7 @@ export const finalPriceCaculate = (props) => {
 
   if (totalDiscount > basePrice) {
     alert("Discount cannot exceed base price");
+    return 0;
   } else {
     return totalDiscount;
   }
@@ -49,7 +49,7 @@ export const onTopHandler = (price: number, selectedCampaign, cart, points) => {
   switch (onTopType.name) {
     case CampaignEnum.BY_CATEGORY:
       const clothingItems = cart.filter(
-        (item) => item.category === ShoppingItemCategoryEnum.CLOTHING
+        (item) => item.category === onTopType.item_category
       );
       const clothingTotal = clothingItems.reduce(
         (acc, item) => acc + item.price,

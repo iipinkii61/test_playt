@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import ShoppingList from "../components/shopping-list";
-import DiscountSection from "../components/discount";
-import { Card, Divider } from "antd";
+import DiscountSection from "../components/discount-main";
+import { Card, Col, Divider, Row, Typography } from "antd";
 import { CartType, DiscountType } from "../types/global.type";
 
 const Page = () => {
+  const { Title } = Typography;
   const [basePrice, setBasePrice] = useState<number>(0);
   const [discount, setDiscount] = useState<DiscountType>({
     item: [],
@@ -22,30 +23,33 @@ const Page = () => {
   }, [cart]);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#DBE4C9",
-        minHeight: "100vh",
-        padding: "20px",
-      }}
-    >
-      <ShoppingList setCart={setCart} />
-      <Divider />
-      <DiscountSection
-        setDiscount={setDiscount}
-        basePrice={basePrice}
-        cart={cart}
-      />
-      <Divider />
-      <Card title="Summary" style={{ marginTop: "20px" }}>
-        <p style={{ fontSize: "20px" }}>Price : {basePrice}</p>
-        <p style={{ fontSize: "20px" }}>
-          Discount : {discount.discountValue || 0}
-        </p>
-        <p style={{ fontSize: "30px" }}>
-          Total Price : {basePrice - discount.discountValue}
-        </p>
-      </Card>
+    <div className="main-container">
+      <Row>
+        <Col xs={24} sm={12} style={{ padding: "24px" }}>
+          <ShoppingList setCart={setCart} />
+        </Col>
+        <Col
+          xs={24}
+          sm={12}
+          style={{ background: "#5E936C", padding: "24px", minHeight: "100vh" }}
+        >
+          <DiscountSection
+            setDiscount={setDiscount}
+            basePrice={basePrice}
+            cart={cart}
+          />
+          <Divider />
+          <Card title="Summary" style={{ marginTop: "20px" }}>
+            <Title level={4}>Price : {basePrice}.-</Title>
+            <Title level={4} style={{ color: "#5E936C" }}>
+              Discount : {discount.discountValue || 0}.-
+            </Title>
+            <Title level={2}>
+              Total Price : {basePrice - discount.discountValue}.-
+            </Title>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

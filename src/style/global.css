@@ -1,3 +1,26 @@
-body {
-  margin: 0;
+.main-container {
+  background-color: #dbe4c9;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.point-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  background-color: #fffff0;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.coupon-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

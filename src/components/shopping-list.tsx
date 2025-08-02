@@ -5,10 +5,15 @@ const ShoppingList = (props) => {
   const { setCart } = props;
   return (
     <>
-      <Row gutter={16}>
+      <Row gutter={[16, 16]}>
         {shoppingItem.map((item, index) => (
           <Col key={index}>
-            <Card key={index} title={item.categories} style={{ width: 300 }}>
+            <Card
+              key={index}
+              title={item.categories}
+              style={{ width: 300 }}
+              hoverable
+            >
               {item.items.map((subItem) => (
                 <div key={subItem.id}>
                   <Checkbox
@@ -25,9 +30,7 @@ const ShoppingList = (props) => {
                       } else {
                         setCart((prev) =>
                           prev.filter(
-                            (cartItem) =>
-                              cartItem.name !== subItem.name &&
-                              cartItem.category !== item.categories
+                            (cartItem) => cartItem.name !== subItem.name
                           )
                         );
                       }

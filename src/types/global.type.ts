@@ -12,12 +12,13 @@ export type CartType = {
 };
 
 export type CampaignDataType = {
-  id: string;
+  id: string | number;
   name: string;
   categories: CampaignCategoryEnum;
   amount?: number;
   stepAmount?: number;
   stepToDiscountAmount?: number;
+  item_category?: string;
 };
 
 export type DiscountComponentPropsType = {

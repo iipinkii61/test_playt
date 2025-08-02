@@ -2,6 +2,8 @@
 
 import React from "react";
 import "antd/dist/reset.css";
+import "../style/global.css";
+import { ConfigProvider } from "antd";
 
 export default function RootLayout({
   children,
@@ -10,7 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <ConfigProvider theme={{ token: { colorPrimary: "#8AA624" } }}>
+        <body>{children}</body>
+      </ConfigProvider>
     </html>
   );
 }
