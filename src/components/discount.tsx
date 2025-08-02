@@ -1,8 +1,8 @@
 import { Button, InputNumber, Row } from "antd";
 import campaignData from "../data/campaign.json";
-import { CampaignCategoryEnum, CampaignEnum } from "../enum/campaign.enum";
+import { CampaignCategoryEnum } from "../enum/campaign.enum";
 import { useEffect, useState } from "react";
-import { ShoppingItemCategoryEnum } from "../enum/shopping-item.enum";
+import { finalPriceCaculate } from "../utils/calculateDiscount";
 
 const defaultCampaignStorage = {
   [CampaignCategoryEnum.COUPON]: undefined,
@@ -11,7 +11,7 @@ const defaultCampaignStorage = {
 };
 
 const DiscountSection = (props) => {
-  const { setDiscount, discount, basePrice, cart } = props;
+  const { setDiscount, basePrice, cart } = props;
   const [selectedCampaign, setSelectedCampaign] = useState(
     defaultCampaignStorage
   );
@@ -26,76 +26,14 @@ const DiscountSection = (props) => {
       return;
     }
 
-    const couponDiscount = couponHandler() || 0;
-    const afterCoupon = basePrice - couponDiscount;
+    const props = { setDiscount, basePrice, selectedCampaign, cart, points };
 
-    const onTopDiscount = onTopHandler(afterCoupon) || 0;
-    const afterOnTop = afterCoupon - onTopDiscount;
-
-    const seasonalDiscount = seasonalHandler(afterOnTop) || 0;
-
-    const totalDiscount = couponDiscount + onTopDiscount + seasonalDiscount;
-
-    // FOR DEBUGGING
-    // console.log("coupon", couponDiscount);
-    // console.log("afterCoupon", afterCoupon);
-    // console.log("onTop", onTopDiscount);
-    // console.log("afterOnTop", afterOnTop);
-    // console.log("seasonal", seasonalDiscount);
-
-    // console.log("Total Discount:", totalDiscount, basePrice);
-
-    if (totalDiscount > basePrice) {
-      alert("Discount cannot exceed base price");
-    } else {
-      setDiscount({
-        item: Object.values(selectedCampaign).filter((item) => item),
-        discountValue: totalDiscount,
-      });
-    }
+    const totalDiscount = finalPriceCaculate(props);
+    setDiscount({
+      item: Object.values(selectedCampaign).filter((item) => item),
+      discountValue: totalDiscount,
+    });
   }, [selectedCampaign, basePrice, points, cart]);
-
-  const couponHandler = () => {
-    const couponType = selectedCampaign[CampaignCategoryEnum.COUPON];
-    if (!couponType) return 0;
-    switch (couponType.name) {
-      case CampaignEnum.FIXED_AMOUNT:
-        return couponType.amount || 0;
-      case CampaignEnum.PERCENTAGE:
-        return basePrice * couponType.amount; // Assuming a 10% discount
-      default:
-        return;
-    }
-  };
-
-  const onTopHandler = (price: number) => {
-    const onTopType = selectedCampaign[CampaignCategoryEnum.ON_TOP];
-    if (!onTopType) return 0;
-    switch (onTopType.name) {
-      case CampaignEnum.BY_CATEGORY:
-        const clothingItems = cart.filter(
-          (item) => item.category === ShoppingItemCategoryEnum.CLOTHING
-        );
-        const clothingTotal = clothingItems.reduce(
-          (acc, item) => acc + item.price,
-          0
-        );
-        return clothingTotal * onTopType.amount;
-
-      case CampaignEnum.POINT:
-        const maxDiscount = price * 0.2;
-        return points > maxDiscount ? maxDiscount : points;
-      default:
-        return;
-    }
-  };
-
-  const seasonalHandler = (price: number) => {
-    const onSeasonalDiscount = selectedCampaign[CampaignCategoryEnum.SEASONAL];
-    if (!onSeasonalDiscount) return 0;
-    const roundToDiscount = Math.floor(price / onSeasonalDiscount.stepAmount);
-    return roundToDiscount * onSeasonalDiscount.stepToDiscountAmount;
-  };
 
   return (
     <div>
@@ -115,7 +53,7 @@ const DiscountSection = (props) => {
           reset
         </Button>
         <p style={{ marginBottom: 0, fontSize: "12px" }}>
-          points can be used up to 20% of total price (before discount)
+          points can be used up to 20% of total price (after discount)
         </p>
       </div>
       <Row>

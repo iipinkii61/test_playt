@@ -32,7 +32,6 @@ const Page = () => {
       <Divider />
       <DiscountSection
         setDiscount={setDiscount}
-        discount={discount}
         basePrice={basePrice}
         cart={cart}
       />
