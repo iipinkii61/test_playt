@@ -3,6 +3,10 @@ import campaignData from "../data/campaign.json";
 import { CampaignCategoryEnum } from "../enum/campaign.enum";
 import { useEffect, useState } from "react";
 import { finalPriceCaculate } from "../utils/calculateDiscount";
+import {
+  CampaignSelectedType,
+  DiscountComponentPropsType,
+} from "../types/global.type";
 
 const defaultCampaignStorage = {
   [CampaignCategoryEnum.COUPON]: undefined,
@@ -10,11 +14,10 @@ const defaultCampaignStorage = {
   [CampaignCategoryEnum.SEASONAL]: undefined,
 };
 
-const DiscountSection = (props) => {
+const DiscountSection = (props: DiscountComponentPropsType) => {
   const { setDiscount, basePrice, cart } = props;
-  const [selectedCampaign, setSelectedCampaign] = useState(
-    defaultCampaignStorage
-  );
+  const [selectedCampaign, setSelectedCampaign] =
+    useState<CampaignSelectedType>(defaultCampaignStorage);
   const [points, setPoints] = useState<number>(0);
 
   useEffect(() => {
@@ -63,8 +66,8 @@ const DiscountSection = (props) => {
               {campaign.name} {campaign.amount ? `${campaign.amount}` : ""}
             </p>
             {Object.values(selectedCampaign)
-              .map((item) => item?.id)
-              .includes(campaign?.id) ? (
+              .map((item) => item?.id.toString())
+              .includes(campaign?.id.toString()) ? (
               <Button
                 onClick={() =>
                   setSelectedCampaign((prev) => ({

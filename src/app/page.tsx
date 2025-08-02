@@ -4,18 +4,19 @@ import React, { useEffect, useState } from "react";
 import ShoppingList from "../components/shopping-list";
 import DiscountSection from "../components/discount";
 import { Card, Divider } from "antd";
+import { CartType, DiscountType } from "../types/global.type";
 
 const Page = () => {
   const [basePrice, setBasePrice] = useState<number>(0);
-  const [discount, setDiscount] = useState({
+  const [discount, setDiscount] = useState<DiscountType>({
     item: [],
     discountValue: 0,
   });
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState<CartType[]>([]);
 
   useEffect(() => {
     const price = cart
-      .map((item) => item.price)
+      .map((item: CartType) => item.price)
       .reduce((acc, curr) => acc + curr, 0);
     setBasePrice(price);
   }, [cart]);
@@ -28,7 +29,7 @@ const Page = () => {
         padding: "20px",
       }}
     >
-      <ShoppingList cart={cart} setCart={setCart} />
+      <ShoppingList setCart={setCart} />
       <Divider />
       <DiscountSection
         setDiscount={setDiscount}
